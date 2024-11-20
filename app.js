@@ -32,7 +32,6 @@ app.use((0, cors_1.default)({
 }));
 // Serve static files from the 'public' directory
 app.use(express_1.default.static(path_1.default.join(__dirname, "/public")));
-// console.log(path.join(__dirname,'/public'));
 // parser
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());

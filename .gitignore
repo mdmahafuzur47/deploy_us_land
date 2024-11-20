@@ -23,6 +23,7 @@ dist
 
 .env
 
+public
 
 # debug
 npm-debug.log*

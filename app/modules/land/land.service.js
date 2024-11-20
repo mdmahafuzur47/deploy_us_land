@@ -40,7 +40,6 @@ exports.LandService = void 0;
 const land_model_1 = __importStar(require("./land.model"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
-const config_1 = __importDefault(require("../../config"));
 // upload Land Data Into DB
 const uploadLandData = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield land_model_1.default.create(payload);
@@ -82,7 +81,7 @@ const deleteThumbnailImage = (id) => __awaiter(void 0, void 0, void 0, function*
     if (!isExist) {
         throw new Error("Thumbnail not found");
     }
-    const publicPath = path_1.default.join(__dirname, "../../../../src/public");
+    const publicPath = path_1.default.join(__dirname, "../../../public");
     try {
         yield fs_1.default.unlinkSync(path_1.default.join(publicPath, isExist.imageUrl));
         yield land_model_1.ThumbnailLand.findByIdAndDelete(id);
@@ -98,7 +97,7 @@ const deleteArchiveImage = (id) => __awaiter(void 0, void 0, void 0, function* (
     if (!isExist) {
         throw new Error("Archive not found");
     }
-    const publicPath = path_1.default.join(__dirname, "../../../../src/public");
+    const publicPath = path_1.default.join(__dirname, "../../../public");
     try {
         if (Array.isArray(isExist.fileUrls)) {
             for (const img of isExist.fileUrls) {
@@ -118,7 +117,7 @@ const deleteSingleArchiveImage = (_a) => __awaiter(void 0, [_a], void 0, functio
     if (!isExist) {
         throw new Error("Archive not found");
     }
-    const publicPath = path_1.default.join(__dirname, "../../../../src/public");
+    const publicPath = path_1.default.join(__dirname, "../../../public");
     try {
         yield fs_1.default.unlinkSync(path_1.default.join(publicPath, imageUrl));
         isExist.fileUrls = isExist.fileUrls.filter((img) => img !== imageUrl);
@@ -137,9 +136,7 @@ const uploadThumbnail = (file, payload) => __awaiter(void 0, void 0, void 0, fun
     }
     const isExist = yield land_model_1.ThumbnailLand.findById(payload === null || payload === void 0 ? void 0 : payload.id);
     if (isExist) {
-        const publicPath = config_1.default.env === "production"
-            ? "/opt/render/project/src/public"
-            : path_1.default.join(__dirname, "../../../../src/public");
+        const publicPath = path_1.default.join(__dirname, "../../../public");
         yield fs_1.default.unlinkSync(path_1.default.join(publicPath, isExist === null || isExist === void 0 ? void 0 : isExist.imageUrl));
         const result = yield land_model_1.ThumbnailLand.findByIdAndUpdate(isExist === null || isExist === void 0 ? void 0 : isExist._id, { imageUrl: thumbnailImg }, {
             new: true,
