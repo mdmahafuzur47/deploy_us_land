@@ -22,6 +22,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const userData = yield user_model_1.default.findOne({
         email: payload.email,
+        status: "active",
     });
     if (!userData) {
         throw new Error("Invalid email or password");

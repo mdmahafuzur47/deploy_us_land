@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserServices = void 0;
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const user_model_1 = __importDefault(require("./user.model"));
 const createUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, email, password } = payload;
@@ -24,13 +25,61 @@ const createUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     });
     return result;
 });
-const getAllUser = (email) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_model_1.default.find({
-        email: { $ne: email },
-    });
+const getAllUser = (email, query) => __awaiter(void 0, void 0, void 0, function* () {
+    const { status, searchTerm } = query;
+    const filters = {};
+    if (status) {
+        filters.status = status;
+    }
+    if (searchTerm) {
+        filters.$or = [
+            { name: { $regex: searchTerm, $options: "i" } },
+            { email: { $regex: searchTerm, $options: "i" } },
+        ];
+    }
+    const result = yield user_model_1.default.find(Object.assign({ email: { $ne: email } }, filters));
     return result;
+});
+const getSingleUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const isExit = yield user_model_1.default.findById(id).select("name email _id");
+    if (!isExit) {
+        throw new Error("User not found");
+    }
+    return isExit;
+});
+const changeUserStatus = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const isExit = yield user_model_1.default.findById(payload.id);
+    if (!isExit) {
+        throw new Error("User not found");
+    }
+    yield user_model_1.default.findByIdAndUpdate(isExit._id, {
+        status: payload === null || payload === void 0 ? void 0 : payload.status,
+    });
+    return true;
+});
+const deleteUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const isExit = yield user_model_1.default.findById(id);
+    if (!isExit) {
+        throw new Error("User not found");
+    }
+    yield user_model_1.default.findByIdAndDelete(id);
+    return true;
+});
+const updateUser = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    if (payload === null || payload === void 0 ? void 0 : payload.password) {
+        payload.password = yield bcrypt_1.default.hash(payload.password, 12);
+    }
+    const user = yield user_model_1.default.findByIdAndUpdate(id, payload);
+    if (!user) {
+        throw new Error("User not found");
+    }
+    return user;
 });
 exports.UserServices = {
     createUser,
     getAllUser,
+    changeUserStatus,
+    deleteUser,
+    getSingleUser,
+    updateUser,
 };

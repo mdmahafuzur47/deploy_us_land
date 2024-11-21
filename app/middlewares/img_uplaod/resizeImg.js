@@ -20,11 +20,7 @@ const single = (des) => {
         var _a, _b;
         try {
             if (!req.file) {
-                res.status(400).json({
-                    success: false,
-                    message: "No file uploaded",
-                });
-                return;
+                return next();
             }
             const filePath = (_a = req === null || req === void 0 ? void 0 : req.file) === null || _a === void 0 ? void 0 : _a.path;
             const readFile = fs_1.default.readFileSync(filePath);
@@ -46,12 +42,8 @@ const single = (des) => {
 };
 const multiple = (des) => {
     return (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-        if (!(req === null || req === void 0 ? void 0 : req.files)) {
-            res.status(400).json({
-                success: false,
-                message: "No files uploaded",
-            });
-            return;
+        if (!req.file) {
+            return next();
         }
         const files = req === null || req === void 0 ? void 0 : req.files;
         for (const file of files) {

@@ -20,13 +20,13 @@ const BlogSchema = new mongoose_1.Schema({
         required: true,
     },
     category: {
-        type: String,
+        type: [String],
         required: true,
     },
     status: {
         type: String,
-        enum: ["active", "blocked"],
-        default: "blocked",
+        enum: ["active", "blocked", "pending"],
+        default: "pending",
     },
 }, {
     timestamps: true,

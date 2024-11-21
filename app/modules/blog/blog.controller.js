@@ -25,14 +25,48 @@ const createBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
     });
 }));
 const getAllBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const blogs = yield blog_service_1.BlogService.getAllBlog();
+    const blogs = yield blog_service_1.BlogService.getAllBlog(req.query);
     res.status(200).json({
         success: true,
-        message: "All blogs",
+        message: "All blogs Get successfully",
         data: blogs,
+    });
+}));
+const getSingleBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const blog = yield blog_service_1.BlogService.getSingleBlog(req.params.id);
+    res.status(200).json({
+        success: true,
+        message: "Single blog Get successfully",
+        data: blog,
+    });
+}));
+const changeBlogStatus = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    yield blog_service_1.BlogService.changeBlogStatus(req === null || req === void 0 ? void 0 : req.body);
+    res.status(200).json({
+        success: true,
+        message: "Blog status updated successfully",
+    });
+}));
+const deleteBlogData = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    yield blog_service_1.BlogService.deleteBlogData(req.params.id);
+    res.status(200).json({
+        success: true,
+        message: "Blog deleted successfully",
+    });
+}));
+const updateBlogData = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const updateData = JSON.parse(req.body.data);
+    yield blog_service_1.BlogService.updateBlogData(req.params.id, updateData, req.file);
+    res.status(200).json({
+        success: true,
+        message: "Blog Updated successfully",
     });
 }));
 exports.BlogController = {
     createBlog,
     getAllBlog,
+    changeBlogStatus,
+    deleteBlogData,
+    getSingleBlog,
+    updateBlogData,
 };
