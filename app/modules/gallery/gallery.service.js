@@ -43,7 +43,7 @@ const getAllImages = (status) => __awaiter(void 0, void 0, void 0, function* () 
         return yield gallery_model_1.default.find();
     }
     const filters = status ? { status } : {};
-    const result = yield gallery_model_1.default.find(filters);
+    const result = yield gallery_model_1.default.find(filters).sort({ createdAt: -1 });
     return result;
 });
 const changeStatus = (id) => __awaiter(void 0, void 0, void 0, function* () {
