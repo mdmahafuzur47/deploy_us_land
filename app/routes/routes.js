@@ -6,6 +6,7 @@ const auth_route_1 = require("../modules/auth/auth.route");
 const land_route_1 = require("../modules/land/land.route");
 const blog_route_1 = require("../modules/blog/blog.route");
 const meta_route_1 = require("../modules/metaData/meta.route");
+const gallery_route_1 = require("../modules/gallery/gallery.route");
 const router = (0, express_1.Router)();
 const moduleRoutes = [
     {
@@ -27,6 +28,10 @@ const moduleRoutes = [
     {
         path: "/meta-data",
         route: meta_route_1.MetaDataRoute,
+    },
+    {
+        path: "/gallery",
+        route: gallery_route_1.GalleryRouter,
     },
 ];
 moduleRoutes.forEach((item) => router.use(item === null || item === void 0 ? void 0 : item.path, item === null || item === void 0 ? void 0 : item.route));

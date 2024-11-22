@@ -42,7 +42,7 @@ const single = (des) => {
 };
 const multiple = (des) => {
     return (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-        if (!req.file) {
+        if (!req.files) {
             return next();
         }
         const files = req === null || req === void 0 ? void 0 : req.files;

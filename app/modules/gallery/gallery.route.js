@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GalleryRouter = void 0;
+const express_1 = require("express");
+const gallery_controller_1 = require("./gallery.controller");
+const upload_1 = require("../../middlewares/img_uplaod/upload");
+const resizeImg_1 = require("../../middlewares/img_uplaod/resizeImg");
+const router = (0, express_1.Router)();
+const galleryDes = "/media/gallery";
+router.get("/", gallery_controller_1.GalleryController.getAllImages);
+router.post("/", (0, upload_1.upload)(galleryDes).array("img"), resizeImg_1.resizeImg.multiple(galleryDes), gallery_controller_1.GalleryController.uploadImg);
+router.delete("/", gallery_controller_1.GalleryController.deleteSingleImg);
+router.put("/:id/status", gallery_controller_1.GalleryController.changeStatus);
+exports.GalleryRouter = router;
